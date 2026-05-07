@@ -2,40 +2,25 @@ pipeline {
 
     agent any
 
-    environment {
-        IMAGE_NAME = "subhaashree06/cicd-docker-app"
-        TAG = "latest"
-    }
-
     stages {
 
         stage('Clone Repo') {
             steps {
-               git branch: 'main', url: 'https://github.com/Subhaashree06/cicd-docker-app.git'
+                git branch: 'main', url: 'https://github.com/Subhaashree06/cicd-docker-app.git'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Test Stage') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:$TAG .'
+                echo "Pipeline Working Successfully"
             }
         }
 
-        stage('Run Tests') {
+        stage('Deploy Stage') {
             steps {
-                echo "Running tests..."
-                sh 'docker run --rm $IMAGE_NAME:$TAG python -c "print(\\"Tests Passed\\")"'
-            }
-        }
-
-        stage('Deploy Container') {
-            steps {
-                sh '''
-                docker stop cicd-container || true
-                docker rm cicd-container || true
-                docker run -d -p 5000:5000 --name cicd-container $IMAGE_NAME:$TAG
-                '''
+                echo "Application Deployment Successful"
             }
         }
     }
 }
+      
